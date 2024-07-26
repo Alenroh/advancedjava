@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   private request!: ReserveRoomRequest;
   private currentCheckInVal!: string;
   private currentCheckOutVal!: string;
-
+  convertedTimes: string = '';
   public welcomeMessage: string = '';
 
   constructor(private httpClient: HttpClient, private welcomeService: WelcomeService) {}
@@ -37,8 +37,19 @@ export class AppComponent implements OnInit {
     });
 
     this.fetchWelcomeMessage('en-US');
+    this.getConvertedTimes();
   }
 
+  getConvertedTimes(): void {
+    this.httpClient.get('/api/time/convert', {responseType: 'text'}).subscribe(
+      (data: string) => {
+        this.convertedTimes = data;
+      },
+      (error: any) => {
+        console.error('Error fetching converted times', error);
+      }
+    );
+  }
   onSubmit({ value, valid }: { value: Roomsearch, valid: boolean }) {
     if (valid) {
       this.getAllRooms().subscribe(

@@ -25,6 +25,11 @@
         <button (click)="fetchWelcomeMessage('en-US')">English</button>
         <button (click)="fetchWelcomeMessage('fr-CA')">French</button>
       </div>
+      <div class="container">
+        <h1>Converted Times</h1>
+        <p>{{ convertedTimes }}</p>
+        <button (click)="getConvertedTimes()">Refresh Times</button>
+      </div>
 
       <div class="row">
         <div class="col-12">
