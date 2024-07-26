@@ -23,7 +23,12 @@
   <div class="scene" id="welcome">
     <article class="content">
 
- 
+
+      <div>
+        <h1>{{ welcomeMessage }}</h1>
+        <button (click)="fetchWelcomeMessage('en-US')">English</button>
+        <button (click)="fetchWelcomeMessage('fr-CA')">French</button>
+      </div>
 
       <div class="row">
         <div class=""col-12>
@@ -58,7 +63,7 @@
               </div>
               </form>
 
-        
+
         </div>
       </div>
 
