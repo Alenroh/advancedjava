@@ -11,7 +11,7 @@ public class TimeConv {
         ZonedDateTime mtTime = dateTime.withZoneSameInstant(ZoneId.of("America/Denver"));
         ZonedDateTime utcTime = dateTime.withZoneSameInstant(ZoneId.of("UTC"));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
         return "ET: " + etTime.format(formatter) + ", MT: " + mtTime.format(formatter) + ", UTC: " + utcTime.format(formatter);
     }

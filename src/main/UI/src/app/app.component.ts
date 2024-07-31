@@ -53,23 +53,25 @@ export class AppComponent implements OnInit {
         this.convertedTimes = data;
       },
       (error: any) => {
-        console.error('Error fetching converted times', error);
+        console.error('Error fetching converted times:', error);
       }
     );
   }
 
-  onSubmit({ value, valid }: { value: Roomsearch, valid: boolean }) {
-    if (valid) {
-      this.getAllRooms().subscribe(
-        rooms => {
-          this.rooms = <Room[]>rooms;
-          this.rooms.forEach(room => {
-            room.priceEUR = (parseFloat(room.price) * 0.85).toFixed(2); // Example conversion rate
-            room.priceCAD = (parseFloat(room.price) * 1.25).toFixed(2); // Example conversion rate
-          });
-        }
-      );
-    }
+  onSubmit(roomsearch: FormGroup) {
+    this.getAllRooms().subscribe(
+      (data: Room[]) => {
+        this.rooms = data;
+        this.rooms.forEach(room => {
+          room.priceUSD = parseFloat(room.price).toFixed(2);
+          room.priceCAD = (parseFloat(room.price) * 1.25).toFixed(2); // Example conversion rate
+          room.priceEUR = (parseFloat(room.price) * 0.85).toFixed(2); // Example conversion rate
+        });
+      },
+      (error: any) => {
+        console.error('Error fetching rooms:', error);
+      }
+    );
   }
 
   reserveRoom(roomId: string) {
@@ -89,16 +91,11 @@ export class AppComponent implements OnInit {
   }
 }
 
-export interface Roomsearch {
-  checkin: string;
-  checkout: string;
-}
-
 export interface Room {
   id: string;
   roomNumber: string;
   price: string;
-  links: string;
+  priceUSD?: string;
   priceCAD?: string;
   priceEUR?: string;
 }
