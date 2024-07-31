@@ -6,12 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WelcomeService {
+  private readonly baseURL: string = 'http://localhost:8080';
+  private readonly welcomeUrl: string = `${this.baseURL}/welcome`;
+  private readonly announceUrl: string = `${this.baseURL}/announce`;
 
-  private apiUrl = 'http://localhost:8080/api/welcome';
-
-  constructor(private http: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   getWelcomeMessage(language: string): Observable<string> {
-    return this.http.get(this.apiUrl, { headers: { 'Accept-Language': language }, responseType: 'text' });
+    return this.httpClient.get(`${this.welcomeUrl}?lang=${language}`, { responseType: 'text' });
+  }
+
+  getAnnouncePresentation(): Observable<string> {
+    return this.httpClient.get(`${this.announceUrl}`, { responseType: 'text' });
   }
 }

@@ -21,7 +21,11 @@ export class AppComponent implements OnInit {
   private currentCheckInVal!: string;
   private currentCheckOutVal!: string;
   convertedTimes: string = '';
-  public welcomeMessage: string = '';
+
+  // Observable properties
+  welcomeMessageFrench$!: Observable<string>;
+  welcomeMessageEnglish$!: Observable<string>;
+  announcePresentation$!: Observable<string>;
 
   constructor(private httpClient: HttpClient, private welcomeService: WelcomeService) {}
 
@@ -36,12 +40,15 @@ export class AppComponent implements OnInit {
       this.currentCheckOutVal = x.checkout;
     });
 
-    this.fetchWelcomeMessage('en-US');
+    this.welcomeMessageFrench$ = this.welcomeService.getWelcomeMessage('fr');
+    this.welcomeMessageEnglish$ = this.welcomeService.getWelcomeMessage('en');
+    this.announcePresentation$ = this.welcomeService.getAnnouncePresentation();
+
     this.getConvertedTimes();
   }
 
   getConvertedTimes(): void {
-    this.httpClient.get('/api/time/convert', {responseType: 'text'}).subscribe(
+    this.httpClient.get('/api/time/convert', { responseType: 'text' }).subscribe(
       (data: string) => {
         this.convertedTimes = data;
       },
@@ -50,6 +57,7 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
   onSubmit({ value, valid }: { value: Roomsearch, valid: boolean }) {
     if (valid) {
       this.getAllRooms().subscribe(
@@ -70,7 +78,7 @@ export class AppComponent implements OnInit {
   }
 
   private createReservation(body: ReserveRoomRequest) {
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     this.httpClient.post(this.postUrl, body, { headers })
       .subscribe(res => console.log(res));
   }
@@ -78,13 +86,6 @@ export class AppComponent implements OnInit {
   private getAllRooms(): Observable<any> {
     const params = `?checkin=${this.currentCheckInVal}&checkout=${this.currentCheckOutVal}`;
     return this.httpClient.get(this.getUrl + params, { responseType: 'json' });
-  }
-
-  protected fetchWelcomeMessage(language: string) {
-    this.welcomeService.getWelcomeMessage(language).subscribe(
-      message => this.welcomeMessage = message,
-      error => console.error('Error fetching welcome message', error)
-    );
   }
 }
 
