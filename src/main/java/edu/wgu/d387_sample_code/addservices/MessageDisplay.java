@@ -5,17 +5,19 @@ import java.util.ResourceBundle;
 
 public class MessageDisplay implements Runnable {
 
-    private Locale locale;
+    Locale locale;
 
     public MessageDisplay(Locale locale) {
         this.locale = locale;
     }
 
     public String getWelcomeMessage() {
-        ResourceBundle bundle = ResourceBundle.getBundle("translation", locale);
-        return bundle.getString("welcomeMessage"); }
+        ResourceBundle bundle = ResourceBundle.getBundle("translation",locale);
+        return bundle.getString("welcome");
+    }
+
     @Override
     public void run() {
-        System.out.println("Thread verification: " + getWelcomeMessage() + ", ThreadID: " + Thread.currentThread().getId());
+        System.out.println( "Thread verification: " + getWelcomeMessage() + ", ThreadID: " + Thread.currentThread().getId() );
     }
 }

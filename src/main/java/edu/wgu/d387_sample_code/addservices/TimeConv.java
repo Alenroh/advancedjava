@@ -1,18 +1,22 @@
 package edu.wgu.d387_sample_code.addservices;
 
-import java.time.ZonedDateTime;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
 
+@CrossOrigin(origins = "http://localhost:4200")
 public class TimeConv {
 
-    public String convertTimes(ZonedDateTime dateTime) {
-        ZonedDateTime etTime = dateTime.withZoneSameInstant(ZoneId.of("America/New_York"));
-        ZonedDateTime mtTime = dateTime.withZoneSameInstant(ZoneId.of("America/Denver"));
-        ZonedDateTime utcTime = dateTime.withZoneSameInstant(ZoneId.of("UTC"));
+    public static String getTime() {
+        ZonedDateTime time = ZonedDateTime.now();
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        ZonedDateTime est = time.withZoneSameInstant(ZoneId.of("America/New_York"));
+        ZonedDateTime mst = time.withZoneSameInstant(ZoneId.of("America/Denver"));
+        ZonedDateTime utc = time.withZoneSameInstant(ZoneId.of("UTC"));
 
-        return "ET: " + etTime.format(formatter) + ", MT: " + mtTime.format(formatter) + ", UTC: " + utcTime.format(formatter);
+        String times = est.format(timeFormat) + "EST, " + mst.format(timeFormat) + "MST, " + utc.format(timeFormat) + "UTC";
+
+        return times;
     }
 }

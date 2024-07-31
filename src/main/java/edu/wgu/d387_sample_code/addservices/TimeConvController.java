@@ -1,24 +1,18 @@
 package edu.wgu.d387_sample_code.addservices;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.ZonedDateTime;
-
 @RestController
-@RequestMapping("/api/time")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TimeConvController {
 
-    private final TimeConv timeConv;
-
-    public TimeConvController() {
-        this.timeConv = new TimeConv();
-    }
-
-    @GetMapping("/convert")
-    public String getConvertedTimes() {
-        ZonedDateTime currentTime = ZonedDateTime.now();
-        return timeConv.convertTimes(currentTime);
+    @GetMapping("/presentation")
+    public ResponseEntity<String> announcePresentation() {
+        String announcement = "The presentation is beginning at: " + TimeConv.getTime();
+        return new ResponseEntity<String> (announcement, HttpStatus.OK);
     }
 }
